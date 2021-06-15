@@ -10,7 +10,7 @@ const connectionString = `postgresql://${process.env.DB_USER}:${process.env.DB_P
 
 const pool = new Pool({
   connectionString: isProduction ? process.env.DATABASE_URL : connectionString,
-  ssl: true,
+  //ssl: isProduction,
 })
 
 
@@ -18,6 +18,12 @@ const sequelize = new Sequelize(process.env.DATABASE_URL, {
   host: env.host,
   dialect: env.dialect,
   operatorsAliases: false,
+  dialectOptions: {
+    ssl: {
+      require: true,
+      rejectUnauthorized: false // <<<<<<< YOU NEED THIS
+    }
+  },
   pool
 });
 
