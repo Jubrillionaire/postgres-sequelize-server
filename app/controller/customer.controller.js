@@ -26,7 +26,7 @@ exports.findAll = (req, res) => {
 
 // Find a Customer by Id
 exports.findById = (req, res) => {	
-	Customer.findById(req.params.id).then(customer => {
+	Customer.findByPk(req.params.id).then(customer => {
 			res.json(customer);
 		}).catch(err => {
 			console.log(err);
