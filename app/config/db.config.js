@@ -3,17 +3,22 @@ const env = require('./env.js');
 
 const Sequelize = require('sequelize');
 
-const sequelize = new Sequelize(process.env.DATABASE_URL, env.username, env.password, {
+const {Pool} = require('pg')
+const isProduction = process.env.NODE_ENV === 'production'
+
+const connectionString = `postgresql://${process.env.DB_USER}:${process.env.DB_PASSWORD}@${process.env.DB_HOST}:${process.env.DB_PORT}/${process.env.DB_DATABASE}`
+
+const pool = new Pool({
+  connectionString: isProduction ? process.env.DATABASE_URL : connectionString,
+  ssl: true,
+})
+
+
+const sequelize = new Sequelize(process.env.DATABASE_URL, {
   host: env.host,
   dialect: env.dialect,
   operatorsAliases: false,
-
-  pool: {
-    max: env.max,
-    min: env.pool.min,
-    acquire: env.pool.acquire,
-    idle: env.pool.idle
-  }
+  pool
 });
 
 const db = {};
