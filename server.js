@@ -2,7 +2,10 @@ var express = require('express');
 var app = express();
 var bodyParser = require('body-parser');
 const path = require("path");
+var dotenv = require("dotenv")
 app.use(bodyParser.json())
+
+dotenv.config()
 
 const db = require('./app/config/db.config.js');
   
@@ -10,6 +13,7 @@ const db = require('./app/config/db.config.js');
 db.sequelize.sync({force: true}).then(() => {
   console.log('Drop and Resync with { force: true }');
 });
+
 
 require('./app/route/customer.route.js')(app);
  
